@@ -6,11 +6,11 @@
 :root{--bg:#f4f1ea;--cd:#fffdf8;--tx:#16251f;--mu:#6b7a72;--pr:#0f5a43;--gd:#b9852b;--ln:#e5dfd0;--hd:#0f2e25}
 @media(prefers-color-scheme:dark){:root{--bg:#0b1511;--cd:#13221c;--tx:#ebf1ec;--mu:#8da398;--pr:#3fc59a;--gd:#e0b25a;--ln:#21352d;--hd:#0a1e18}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 Georgia,'Times New Roman',serif;padding-bottom:calc(66px + env(safe-area-inset-bottom))}
-header{background:var(--hd);color:#f2ead7;padding:calc(18px + env(safe-area-inset-top)) 18px 22px}
+html,body{height:100%;overflow:hidden}body{margin:0;display:flex;flex-direction:column;background:var(--bg);color:var(--tx);font:16px/1.4 Georgia,'Times New Roman',serif}
+header{flex:none;background:var(--hd);color:#f2ead7;padding:calc(18px + env(safe-area-inset-top)) 18px 22px}
 header small{opacity:.75;font:13px system-ui,sans-serif}
 #nx{font-size:15px;opacity:.85;margin-top:10px}#cd{font-size:44px;letter-spacing:1px;font-variant-numeric:tabular-nums;color:#f0c870}
-main{padding:14px;max-width:520px;margin:auto}.tab{display:none}.tab.on{display:block}
+main{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;width:100%;max-width:520px;margin:0 auto}.tab{display:none}.tab.on{display:block}
 .card{background:var(--cd);border:1px solid var(--ln);border-radius:14px;padding:6px 16px;margin-bottom:14px}
 .row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--ln);font-size:19px}
 .row:last-child{border:0}.row b{font-variant-numeric:tabular-nums;font-size:22px}.row i{font:12px system-ui;color:var(--mu);margin-left:8px;font-style:normal}
@@ -27,10 +27,10 @@ h3{font:600 15px system-ui;margin:16px 0 8px}.f{display:flex;align-items:center;
 #qm:after{content:"";position:absolute;left:50%;top:40px;height:calc(50% - 40px);width:4px;margin-left:-2px;background:var(--gd);border-radius:2px}
 #pin{position:absolute;left:50%;top:-14px;margin-left:-9px;border:9px solid transparent;border-bottom:16px solid var(--tx);border-top:0}
 #qs{text-align:center;font:600 18px system-ui}#qs.ok{color:var(--pr)}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--hd);padding-bottom:env(safe-area-inset-bottom)}
+nav{flex:none;display:flex;background:var(--hd);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)}
 nav button{flex:1;background:none;border:0;color:#bcc9c2;border-radius:0;padding:16px 4px}nav button.on{color:#f0c870;font-weight:bold}
 .mu{color:var(--mu);font:13px system-ui}
-</style></head><body>
+#zc{width:210px;height:210px;border-radius:50%;font-size:40px;background:var(--pr);color:#fff;border:0;margin:16px auto;display:block;box-shadow:0 6px 20px rgba(0,0,0,.25)}#zc:active{transform:scale(.97)}</style></head><body>
 <header><small id="loc"></small><div id="dt" style="font-size:20px"></div><div id="nx"></div><div id="cd">--:--:--</div></header>
 <main>
 <section class="tab on" id="t0">
@@ -41,25 +41,40 @@ nav button{flex:1;background:none;border:0;color:#bcc9c2;border-radius:0;padding
  <div id="cmp"><div id="dial"><b>Sh</b><div id="qm"><em>🕋</em></div></div><div id="pin"></div></div>
  <div id="qs">Telefonni tekis ushlang</div><p class="mu" style="text-align:center" id="qd"></p>
 </section>
-<section class="tab" id="t2">
+<section class="tab" id="tz">
+ <select id="zs" onchange="zSel(this.value)" style="width:100%;margin-bottom:12px"></select>
+ <div class="card" style="text-align:center;padding:16px">
+  <div id="zn" style="font-size:28px"></div><div class="mu" id="zp" style="margin-top:6px"></div>
+  <button id="zc" onclick="zTap()">0</button>
+  <button onclick="zReset()">Boshidan</button> <button id="zdel" onclick="zDel()">Zikrni o'chirish</button>
+ </div>
+ <div class="card"><div class="f"><span>Tasbeh ovozi</span><input type="checkbox" id="zsn" onchange="S.zsnd=this.checked?1:0;sv()"></div><div class="f"><span>Tebranish</span><input type="checkbox" id="zvb" onchange="S.zvib=this.checked?1:0;sv()"></div></div>
+ <h3>Yangi zikr qo'shish</h3>
+ <div class="card"><div class="f"><input id="zname" placeholder="Zikr nomi" style="flex:1"><input id="ztar" type="number" value="100" style="width:80px"></div><button class="p" style="width:100%;margin:8px 0" onclick="zAdd()">Qo'shish</button></div>
+</section>
+ <section class="tab" id="t2">
  <h3>Joy</h3><select id="cs" onchange="setCity(this.value)" style="width:100%"></select>
  <button class="p" style="width:100%;margin-top:8px" onclick="gps()">Joylashuvimni aniqlash (GPS)</button><div class="mu" id="gs"></div>
  <h3>Hisoblash burchaklari</h3>
  <div class="card"><div class="f"><span>Bomdod burchagi</span><input type="number" step="0.5" id="fa" onchange="ang()"></div><div class="f"><span>Xufton burchagi</span><input type="number" step="0.5" id="ia" onchange="ang()"></div></div>
  <h3>Vaqtni o'zgartirish va azon</h3><div class="card" id="adj"></div>
  <p class="mu">«Daqiqa» — hisoblangan vaqtga qo'shiladi yoki ayriladi (masalan -2 yoki +3). «Qo'lda» — vaqtni aniq o'zingiz belgilaysiz; tozalash uchun maydonni bo'shating.</p>
+ <h3>Avtomatik jadval</h3><div class="card"><div class="f"><span>Telegram kanal jadvalidan yangilash</span><input type="checkbox" id="au" onchange="S.auto=this.checked?1:0;ch();pull()"></div></div><div class="mu" id="up"></div>
  <h3>Azon ovozi</h3><div class="card"><div class="f"><span>Namoz vaqtida ovoz chalinsin</span><input type="checkbox" id="sn" onchange="snd()"></div></div>
- <button onclick="new Audio('azon.mp3').play()">Azonni sinab ko'rish</button>
+ <button onclick="new Audio('azon.mp3').play()">Azonni eshitish</button>
+ <button onclick="try{AndroidX.test();alert('15 soniyadan keyin azon chalinadi. Ilovani yoping va kuting.')}catch(e){}">Haqiqiy sinov</button>
+ <button onclick="try{AndroidX.soundSettings()}catch(e){}">Signal ovozi sozlamasi</button>
  <button onclick="schedule()">Eslatmalarni yangilash</button>
 </section>
 </main>
-<nav><button class="on" onclick="tab(0,this)">Vaqtlar</button><button onclick="tab(1,this)">Qibla</button><button onclick="tab(2,this)">Sozlamalar</button></nav>
+<nav><button class="on" onclick="tab(0,this)">Vaqtlar</button><button onclick="tab(1,this)">Qibla</button><button onclick="tab(2,this)">Tasbeh</button><button onclick="tab(3,this)">Sozlamalar</button></nav>
+<div id="ob" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9;align-items:center;justify-content:center;padding:20px"><div class="card" style="padding:20px;max-width:420px"><div style="font-size:22px;margin-bottom:8px">Xush kelibsiz</div><p class="mu" style="font-size:15px">Azon o'z vaqtida chalinishi uchun ilovaga quyidagi ruxsatlar kerak: bildirishnoma, joylashuv va fonda ishlash. Keyingi oynalarda «Разрешить» tugmasini bosing.</p><button class="p" style="width:100%" onclick="obGo()">Ruxsatlarni yoqish</button><button style="width:100%;margin-top:8px" onclick="obSkip()">Keyinroq</button></div></div>
 <script>
 const $=i=>document.getElementById(i),R=Math.PI/180;
 const K=["fajr","sunrise","dhuhr","asr","maghrib","isha"],L=["Bomdod","Quyosh","Peshin","Asr","Shom","Xufton"];
 const OY=["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"],HF=["Yakshanba","Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba"];
 const C=[["Toshkent",41.311,69.279,"Asia/Tashkent"],["Samarqand",39.654,66.975,"Asia/Samarkand"],["Buxoro",39.775,64.423,"Asia/Samarkand"],["Andijon",40.783,72.344,"Asia/Tashkent"],["Namangan",41.0,71.672,"Asia/Tashkent"],["Farg'ona",40.384,71.783,"Asia/Tashkent"],["Qo'qon",40.529,70.943,"Asia/Tashkent"],["Nukus",42.46,59.603,"Asia/Samarkand"],["Urganch",41.55,60.633,"Asia/Samarkand"],["Qarshi",38.861,65.789,"Asia/Samarkand"],["Termiz",37.224,67.278,"Asia/Samarkand"],["Guliston",40.489,68.784,"Asia/Tashkent"],["Jizzax",40.116,67.842,"Asia/Samarkand"],["Navoiy",40.103,65.375,"Asia/Samarkand"],["Makka",21.4225,39.8262,"Asia/Riyadh"],["Madina",24.4672,39.6111,"Asia/Riyadh"],["Istanbul",41.0082,28.9784,"Europe/Istanbul"],["Moskva",55.7558,37.6173,"Europe/Moscow"],["Olmaota",43.238,76.945,"Asia/Almaty"],["Bishkek",42.874,74.612,"Asia/Bishkek"],["Dushanbe",38.559,68.787,"Asia/Dushanbe"],["Ashxobod",37.96,58.326,"Asia/Ashgabat"],["Qohira",30.044,31.236,"Africa/Cairo"]];
-const D={city:{n:"Toshkent",lat:41.311,lng:69.279,tz:"Asia/Tashkent"},fa:18,ia:18,off:{},fix:{},az:{fajr:1,dhuhr:1,asr:1,maghrib:1,isha:1},snd:1};
+const D={city:{n:"Toshkent",lat:41.311,lng:69.279,tz:"Asia/Tashkent"},fa:18,ia:18,off:{},fix:{},az:{fajr:1,dhuhr:1,asr:1,maghrib:1,isha:1},snd:1,auto:1,src:"https://raw.githubusercontent.com/sanjarmurod-sys/namoz-app/main/times.json",zk:[],zm:"std",zst:0,zct:0,zsnd:1,zvib:1};
 let S=D;try{S=Object.assign({},D,JSON.parse(localStorage.getItem("namoz_s")||"{}"))}catch(e){}
 let dayOff=0,tm;
 const cap=n=>window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()?Capacitor.Plugins[n]:null;
@@ -75,7 +90,8 @@ function calc(y,m,d){const{lat,lng}=S.city,dd=Date.UTC(y,m-1,d,12)/864e5+2440587
  const A=a=>{const c=(-Math.sin(a)-Math.sin(dc)*Math.sin(lat*R))/(Math.cos(dc)*Math.cos(lat*R));return c>1||c<-1?NaN:Math.acos(c)/R/15};
  const as=-Math.atan(1/(2+Math.tan(Math.abs(lat*R-dc))));
  return[nn-A(S.fa*R),nn-A(.833*R),nn,nn+A(as),nn+A(.833*R),nn+A(S.ia*R)].map(h=>Date.UTC(y,m-1,d)+h*36e5)}
-function day(y,m,d){const b=calc(y,m,d);return K.map((k,i)=>{const f=S.fix[k];if(f&&/^\d\d:\d\d$/.test(f))return toUtc(y,m,d,+f.slice(0,2),+f.slice(3),S.city.tz);return Math.round(b[i]/6e4)*6e4+(+S.off[k]||0)*6e4})}
+function tb(y,m,d){const t=S.tbl;if(!S.auto||!t||t.city!==S.city.n||!t.days)return null;return t.days[y+"-"+String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0")]||null}
+function day(y,m,d){const b=calc(y,m,d),T=tb(y,m,d),ok=v=>v&&/^\d\d:\d\d$/.test(v);return K.map((k,i)=>{const f=S.fix[k],o=(+S.off[k]||0)*6e4;if(ok(f))return toUtc(y,m,d,+f.slice(0,2),+f.slice(3),S.city.tz);if(T&&ok(T[k]))return toUtc(y,m,d,+T[k].slice(0,2),+T[k].slice(3),S.city.tz)+o;return Math.round(b[i]/6e4)*6e4+o})}
 function cur(){const[y,m,d]=today(),t=new Date(Date.UTC(y,m-1,d+dayOff));return[t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate(),t.getUTCDay()]}
 function mv(n){dayOff+=n;render()}
 function pick(v){if(!v)return;const[y,m,d]=v.split("-").map(Number),[a,b,c]=today();dayOff=Math.round((Date.UTC(y,m-1,d)-Date.UTC(a,b-1,c))/864e5);render()}
@@ -84,10 +100,10 @@ function render(){const[y,m,d,w]=cur(),a=day(y,m,d),[nj]=nextP(),tz=S.city.tz;
  $("loc").textContent=S.city.n;$("dt").textContent=d+" "+OY[m-1]+" "+y+", "+HF[w];
  $("pk").value=y+"-"+String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0");
  $("rows").innerHTML=K.map((k,i)=>`<div class="row ${dayOff==0&&i==nj?"nx":""}"><span>${L[i]}${S.fix[k]?"<i>qo'lda</i>":S.off[k]?"<i>"+(S.off[k]>0?"+":"")+S.off[k]+" daq</i>":""}</span><b>${hm(a[i],tz)}</b></div>`).join("");
- $("cs").value=S.city.gps?"gps":S.city.n;$("fa").value=S.fa;$("ia").value=S.ia;$("sn").checked=!!S.snd;qibla()}
+ $("cs").value=S.city.gps?"gps":S.city.n;$("fa").value=S.fa;$("ia").value=S.ia;$("sn").checked=!!S.snd;$("au").checked=!!S.auto;qibla()}
 function tick(){const[j,t]=nextP();if(isNaN(t))return;let s=Math.max(0,Math.floor((t-Date.now())/1e3));const p=n=>String(n).padStart(2,"0");
  $("nx").textContent=L[j]+" vaqtigacha";$("cd").textContent=p(s/3600|0)+":"+p(s/60%60|0)+":"+p(s%60)}
-function tab(n,b){document.querySelectorAll(".tab").forEach((e,i)=>e.classList.toggle("on",i==n));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x==b));if(n==1)startC()}
+function tab(n,b){document.querySelectorAll(".tab").forEach((e,i)=>e.classList.toggle("on",i==n));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x==b));if(n==1)startC();document.querySelector('main').scrollTop=0}
 function setCity(v){if(v=="gps")return;const c=C.find(x=>x[0]==v);S.city={n:c[0],lat:c[1],lng:c[2],tz:c[3]};ch()}
 async function gps(){$("gs").textContent="Aniqlanmoqda...";try{const G=cap("Geolocation");let p;
  if(G){await G.requestPermissions();p=(await G.getCurrentPosition({timeout:20000})).coords}else p=await new Promise((o,e)=>navigator.geolocation.getCurrentPosition(r=>o(r.coords),e,{timeout:20000}));
@@ -95,16 +111,16 @@ async function gps(){$("gs").textContent="Aniqlanmoqda...";try{const G=cap("Geol
 function ang(){S.fa=+$("fa").value||18;S.ia=+$("ia").value||18;ch()}
 function snd(){S.snd=$("sn").checked?1:0;ch()}
 function adj(){$("adj").innerHTML=K.map(k=>`<div class="f"><span>${L[K.indexOf(k)]}</span><input type="number" placeholder="daq" value="${S.off[k]||""}" onchange="S.off['${k}']=+this.value;ch()"><input type="time" value="${S.fix[k]||""}" onchange="S.fix['${k}']=this.value;ch()">${k=="sunrise"?"":`<input type="checkbox" ${S.az[k]?"checked":""} onchange="S.az['${k}']=this.checked?1:0;ch()">`}</div>`).join("")}
-async function schedule(){const N=cap("LocalNotifications");if(!N){$("st").textContent="Eslatmalar faqat APK ichida ishlaydi.";return}
+async function scheduleLN(){const N=cap("LocalNotifications");if(!N){$("st").textContent="Eslatmalar faqat APK ichida ishlaydi.";return}
  try{const pr=await N.requestPermissions();if(pr.display!=="granted"){$("st").textContent="Bildirishnomalarga ruxsat bering.";return}
  try{const e=await N.checkExactNotificationSetting();if(e.exact_alarm!=="granted")await N.changeExactNotificationSetting()}catch(_){}
  await N.createChannel({id:"azon",name:"Azon",description:"Namoz vaqti azoni",importance:5,sound:"azon.mp3",vibration:true});
  await N.createChannel({id:"jim",name:"Eslatma (ovozsiz)",importance:3,vibration:true});
  const p=await N.getPending();if(p.notifications.length)await N.cancel({notifications:p.notifications});
  const[y,m,d]=today(),list=[];
- for(let i=0;i<14;i++){const t=new Date(Date.UTC(y,m-1,d+i)),a=day(t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate());
+ for(let i=0;i<30;i++){const t=new Date(Date.UTC(y,m-1,d+i)),a=day(t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate());
   K.forEach((k,j)=>{if(j!=1&&S.az[k]&&a[j]>Date.now())list.push({id:i*10+j+1,title:L[j]+" vaqti",body:S.city.n+" — "+hm(a[j],S.city.tz),channelId:S.snd?"azon":"jim",schedule:{at:new Date(a[j]),allowWhileIdle:true}})})}
- await N.schedule({notifications:list});$("st").textContent="Keyingi 14 kun uchun "+list.length+" ta eslatma o'rnatildi."}catch(e){$("st").textContent="Eslatma xatosi: "+e}}
+ await N.schedule({notifications:list});$("st").textContent="Keyingi 30 kun uchun "+list.length+" ta eslatma o'rnatildi."}catch(e){$("st").textContent="Eslatma xatosi: "+e}}
 let hd=null,lis=false;
 function qb(){const a=S.city.lat*R,b=21.4225*R,dl=(39.8262-S.city.lng)*R;return(Math.atan2(Math.sin(dl)*Math.cos(b),Math.cos(a)*Math.sin(b)-Math.sin(a)*Math.cos(b)*Math.cos(dl))/R+360)%360}
 function qibla(){const b=qb();$("qm").style.transform="rotate("+b+"deg)";$("qd").textContent="Qibla yo'nalishi: shimoldan "+b.toFixed(1)+"° (soat mili bo'yicha)";if(hd===null)$("dial").style.transform="none"}
@@ -112,5 +128,38 @@ function startC(){if(lis)return;lis=true;const f=e=>{if(e.alpha==null)return;con
  $("dial").style.transform="rotate("+(-hd)+"deg)";const x=((qb()-hd+540)%360)-180;$("qs").textContent=Math.abs(x)<4?"Qibla shu yo'nalishda ✓":"Telefonni "+(x>0?"o'ngga":"chapga")+" buring";$("qs").className=Math.abs(x)<4?"ok":""};
  window.addEventListener("deviceorientationabsolute",f,true);window.addEventListener("deviceorientation",e=>{if(e.absolute)f(e)},true)}
 $("cs").innerHTML='<option value="gps" hidden>GPS joylashuvi</option>'+C.map(c=>`<option>${c[0]}</option>`).join("");
-adj();render();tick();setInterval(tick,1000);setTimeout(schedule,1500);
+function sv(){localStorage.setItem("namoz_s",JSON.stringify(S))}
+function fit(){document.body.style.height=innerHeight+"px"}
+let pend=0,ac;
+function schedule(){
+ if(!(window.AndroidX&&AndroidX.schedule))return scheduleLN();
+ const[y,m,d]=today(),list=[];
+ for(let i=0;i<30;i++){const t=new Date(Date.UTC(y,m-1,d+i)),a=day(t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate());
+  K.forEach((k,j)=>{if(j!=1&&S.az[k]&&a[j]>Date.now())list.push({id:i*10+j+1,t:a[j],title:L[j]+" vaqti",body:S.city.n+" — "+hm(a[j],S.city.tz),snd:S.snd?1:0})})}
+ try{AndroidX.schedule(JSON.stringify(list));$("st").textContent="Azon "+list.length+" ta namoz vaqtiga o'rnatildi (30 kun)."}catch(e){$("st").textContent="Xato: "+e}}
+async function pull(){if(!S.auto)return;try{const r=await fetch(S.src+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const j=await r.json();if(j&&j.days){if(JSON.stringify(j)!==JSON.stringify(S.tbl)){S.tbl=j;sv();render();clearTimeout(tm);tm=setTimeout(schedule,500)}$("up").textContent="Jadval: "+j.city+", yangilangan sana "+(j.updated||"?")}}catch(e){}}
+function obSkip(){S.ob=1;sv();$("ob").style.display="none"}
+async function obGo(){obSkip();const N=cap("LocalNotifications"),G=cap("Geolocation");
+ try{if(N)await N.requestPermissions()}catch(e){}
+ try{if(G)await G.requestPermissions()}catch(e){}
+ try{AndroidX.battery()}catch(e){}
+ setTimeout(schedule,2500)}
+const ZSTD=[["Subxanallox","سُبْحَانَ ٱللَّٰهِ",33],["Alxamdulillax","ٱلْحَمْدُ لِلَّٰهِ",33],["Alloxu Akbar","ٱللَّٰهُ أَكْبَرُ",33]];
+function zList(){const z=S.zk[S.zm];return S.zm=="std"||!z?ZSTD:[[z.n,"",z.t]]}
+function zOpts(){const s=$("zs");s.innerHTML="";const add=(v,t)=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)};add("std","Namoz tasbehi (33 · 33 · 33)");S.zk.forEach((z,i)=>add(i,z.n+" — "+z.t+" ta"));s.value=S.zm}
+function zRender(){const L=zList(),st=Math.min(S.zst,L.length-1),c=L[st];$("zn").textContent=c[0];
+ $("zp").innerHTML=(c[1]?'<div style="font-size:30px;direction:rtl;margin-bottom:4px">'+c[1]+'</div>':"")+(L.length>1?"Bosqich "+(st+1)+" / "+L.length:"")+(S.zdone?'<div style="color:var(--pr);font-weight:bold">Tasbeh tugadi. Alloh qabul qilsin!</div>':"");
+ $("zc").textContent=S.zct+" / "+c[2];$("zdel").style.display=S.zm=="std"?"none":"";$("zsn").checked=!!S.zsnd;$("zvb").checked=!!S.zvib}
+function beep(k){if(!S.zsnd)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();(k==1?[620]:k==2?[660,880]:[660,880,1100]).forEach((hz,i)=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+i*.14;o.type="sine";o.frequency.value=hz;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.25,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+(k==1?.09:.22));o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.25)})}catch(e){}}
+function zTap(){if(S.zdone){S.zdone=0;S.zst=0;S.zct=0}const L=zList(),c=L[S.zst]||L[0];S.zct++;let k=1;
+ if(S.zct>=c[2]){if(S.zst<L.length-1){k=2;S.zst++;S.zct=0}else{k=3;S.zdone=1}}
+ beep(k);if(S.zvib&&navigator.vibrate)navigator.vibrate(k==1?12:k==2?[60,40,60]:[150,80,150,80,250]);sv();zRender()}
+function zReset(){S.zst=0;S.zct=0;S.zdone=0;sv();zRender()}
+function zSel(v){S.zm=v;zReset()}
+function zAdd(){const n=$("zname").value.trim(),t=Math.floor(+$("ztar").value);if(!n||!(t>0))return;S.zk.push({n:n,t:Math.min(t,100000)});S.zm=String(S.zk.length-1);$("zname").value="";zOpts();zReset()}
+function zDel(){if(S.zm=="std")return;S.zk.splice(+S.zm,1);S.zm="std";zOpts();zReset()}
+adj();zOpts();zRender();render();tick();setInterval(tick,1000);fit();addEventListener("resize",fit);
+if(!S.ob&&cap("LocalNotifications"))setTimeout(()=>{$("ob").style.display="flex"},700);else setTimeout(schedule,1500);
+pull();setInterval(pull,216e5);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){pull();if(pend==="bat"){pend=0;try{AndroidX.battery()}catch(e){}}}});
 </script></body></html>

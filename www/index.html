@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f2e25"><title>Namoz Vaqtlari</title>
+<style>
+:root{--bg:#f4f1ea;--cd:#fffdf8;--tx:#16251f;--mu:#6b7a72;--pr:#0f5a43;--gd:#b9852b;--ln:#e5dfd0;--hd:#0f2e25}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1511;--cd:#13221c;--tx:#ebf1ec;--mu:#8da398;--pr:#3fc59a;--gd:#e0b25a;--ln:#21352d;--hd:#0a1e18}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 Georgia,'Times New Roman',serif;padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+header{background:var(--hd);color:#f2ead7;padding:calc(18px + env(safe-area-inset-top)) 18px 22px}
+header small{opacity:.75;font:13px system-ui,sans-serif}
+#nx{font-size:15px;opacity:.85;margin-top:10px}#cd{font-size:44px;letter-spacing:1px;font-variant-numeric:tabular-nums;color:#f0c870}
+main{padding:14px;max-width:520px;margin:auto}.tab{display:none}.tab.on{display:block}
+.card{background:var(--cd);border:1px solid var(--ln);border-radius:14px;padding:6px 16px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--ln);font-size:19px}
+.row:last-child{border:0}.row b{font-variant-numeric:tabular-nums;font-size:22px}.row i{font:12px system-ui;color:var(--mu);margin-left:8px;font-style:normal}
+.row.nx{color:var(--pr);font-weight:bold}
+.nav{display:flex;gap:8px;align-items:center;margin-bottom:12px;font-family:system-ui,sans-serif}
+button,select,input{font:15px system-ui,sans-serif;color:var(--tx);background:var(--cd);border:1px solid var(--ln);border-radius:10px;padding:10px 12px}
+button.p{background:var(--pr);color:#fff;border:0}.nav input{flex:1;text-align:center}
+h3{font:600 15px system-ui;margin:16px 0 8px}.f{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--ln);font:14px system-ui}.f:last-child{border:0}
+.f span{flex:1;font-size:16px}.f input[type=number]{width:64px}.f input[type=time]{width:104px}
+#cmp{width:min(80vw,320px);aspect-ratio:1;margin:20px auto;position:relative}
+#dial{position:absolute;inset:0;border-radius:50%;border:3px solid var(--pr);background:var(--cd);transition:transform .15s linear}
+#dial b{position:absolute;left:50%;top:6px;transform:translateX(-50%);font-size:20px;color:#c0392b}
+#qm{position:absolute;inset:0}#qm em{position:absolute;left:50%;top:-6px;transform:translateX(-50%);font-size:34px;font-style:normal}
+#qm:after{content:"";position:absolute;left:50%;top:40px;height:calc(50% - 40px);width:4px;margin-left:-2px;background:var(--gd);border-radius:2px}
+#pin{position:absolute;left:50%;top:-14px;margin-left:-9px;border:9px solid transparent;border-bottom:16px solid var(--tx);border-top:0}
+#qs{text-align:center;font:600 18px system-ui}#qs.ok{color:var(--pr)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--hd);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:#bcc9c2;border-radius:0;padding:16px 4px}nav button.on{color:#f0c870;font-weight:bold}
+.mu{color:var(--mu);font:13px system-ui}
+</style></head><body>
+<header><small id="loc"></small><div id="dt" style="font-size:20px"></div><div id="nx"></div><div id="cd">--:--:--</div></header>
+<main>
+<section class="tab on" id="t0">
+ <div class="nav"><button onclick="mv(-1)">‹</button><input type="date" id="pk" onchange="pick(this.value)"><button onclick="mv(1)">›</button></div>
+ <div class="card" id="rows"></div><div class="mu" id="st"></div>
+</section>
+<section class="tab" id="t1">
+ <div id="cmp"><div id="dial"><b>Sh</b><div id="qm"><em>🕋</em></div></div><div id="pin"></div></div>
+ <div id="qs">Telefonni tekis ushlang</div><p class="mu" style="text-align:center" id="qd"></p>
+</section>
+<section class="tab" id="t2">
+ <h3>Joy</h3><select id="cs" onchange="setCity(this.value)" style="width:100%"></select>
+ <button class="p" style="width:100%;margin-top:8px" onclick="gps()">Joylashuvimni aniqlash (GPS)</button><div class="mu" id="gs"></div>
+ <h3>Hisoblash burchaklari</h3>
+ <div class="card"><div class="f"><span>Bomdod burchagi</span><input type="number" step="0.5" id="fa" onchange="ang()"></div><div class="f"><span>Xufton burchagi</span><input type="number" step="0.5" id="ia" onchange="ang()"></div></div>
+ <h3>Vaqtni o'zgartirish va azon</h3><div class="card" id="adj"></div>
+ <p class="mu">«Daqiqa» — hisoblangan vaqtga qo'shiladi yoki ayriladi (masalan -2 yoki +3). «Qo'lda» — vaqtni aniq o'zingiz belgilaysiz; tozalash uchun maydonni bo'shating.</p>
+ <h3>Azon ovozi</h3><div class="card"><div class="f"><span>Namoz vaqtida ovoz chalinsin</span><input type="checkbox" id="sn" onchange="snd()"></div></div>
+ <button onclick="new Audio('azon.mp3').play()">Azonni sinab ko'rish</button>
+ <button onclick="schedule()">Eslatmalarni yangilash</button>
+</section>
+</main>
+<nav><button class="on" onclick="tab(0,this)">Vaqtlar</button><button onclick="tab(1,this)">Qibla</button><button onclick="tab(2,this)">Sozlamalar</button></nav>
+<script>
+const $=i=>document.getElementById(i),R=Math.PI/180;
+const K=["fajr","sunrise","dhuhr","asr","maghrib","isha"],L=["Bomdod","Quyosh","Peshin","Asr","Shom","Xufton"];
+const OY=["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"],HF=["Yakshanba","Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba"];
+const C=[["Toshkent",41.311,69.279,"Asia/Tashkent"],["Samarqand",39.654,66.975,"Asia/Samarkand"],["Buxoro",39.775,64.423,"Asia/Samarkand"],["Andijon",40.783,72.344,"Asia/Tashkent"],["Namangan",41.0,71.672,"Asia/Tashkent"],["Farg'ona",40.384,71.783,"Asia/Tashkent"],["Qo'qon",40.529,70.943,"Asia/Tashkent"],["Nukus",42.46,59.603,"Asia/Samarkand"],["Urganch",41.55,60.633,"Asia/Samarkand"],["Qarshi",38.861,65.789,"Asia/Samarkand"],["Termiz",37.224,67.278,"Asia/Samarkand"],["Guliston",40.489,68.784,"Asia/Tashkent"],["Jizzax",40.116,67.842,"Asia/Samarkand"],["Navoiy",40.103,65.375,"Asia/Samarkand"],["Makka",21.4225,39.8262,"Asia/Riyadh"],["Madina",24.4672,39.6111,"Asia/Riyadh"],["Istanbul",41.0082,28.9784,"Europe/Istanbul"],["Moskva",55.7558,37.6173,"Europe/Moscow"],["Olmaota",43.238,76.945,"Asia/Almaty"],["Bishkek",42.874,74.612,"Asia/Bishkek"],["Dushanbe",38.559,68.787,"Asia/Dushanbe"],["Ashxobod",37.96,58.326,"Asia/Ashgabat"],["Qohira",30.044,31.236,"Africa/Cairo"]];
+const D={city:{n:"Toshkent",lat:41.311,lng:69.279,tz:"Asia/Tashkent"},fa:18,ia:18,off:{},fix:{},az:{fajr:1,dhuhr:1,asr:1,maghrib:1,isha:1},snd:1};
+let S=D;try{S=Object.assign({},D,JSON.parse(localStorage.getItem("namoz_s")||"{}"))}catch(e){}
+let dayOff=0,tm;
+const cap=n=>window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()?Capacitor.Plugins[n]:null;
+function ch(){localStorage.setItem("namoz_s",JSON.stringify(S));render();clearTimeout(tm);tm=setTimeout(schedule,1000)}
+function offMs(tz,ms){const o={};new Intl.DateTimeFormat("en-US",{timeZone:tz,hourCycle:"h23",year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric",second:"numeric"}).formatToParts(ms).forEach(x=>o[x.type]=+x.value);return Date.UTC(o.year,o.month-1,o.day,o.hour,o.minute,o.second)-Math.floor(ms/1000)*1000}
+function toUtc(y,m,d,h,i,tz){let g=Date.UTC(y,m-1,d,h,i);return Date.UTC(y,m-1,d,h,i)-offMs(tz,g-offMs(tz,g))}
+const hm=(ms,tz)=>isNaN(ms)?"—":new Intl.DateTimeFormat("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(ms);
+function today(){const t=new Date(Date.now()+offMs(S.city.tz,Date.now()));return[t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate()]}
+function calc(y,m,d){const{lat,lng}=S.city,dd=Date.UTC(y,m-1,d,12)/864e5+2440587.5-2451545-lng/360;
+ const g=(357.529+.98560028*dd)%360,q=(280.459+.98564736*dd)%360,l=q+1.915*Math.sin(g*R)+.02*Math.sin(2*g*R),e=23.439-3.6e-7*dd;
+ let ra=Math.atan2(Math.cos(e*R)*Math.sin(l*R),Math.cos(l*R))/R/15;ra=(ra%24+24)%24;
+ const eq=((q/15-ra+12)%24+24)%24-12,dc=Math.asin(Math.sin(e*R)*Math.sin(l*R)),nn=12-eq-lng/15;
+ const A=a=>{const c=(-Math.sin(a)-Math.sin(dc)*Math.sin(lat*R))/(Math.cos(dc)*Math.cos(lat*R));return c>1||c<-1?NaN:Math.acos(c)/R/15};
+ const as=-Math.atan(1/(2+Math.tan(Math.abs(lat*R-dc))));
+ return[nn-A(S.fa*R),nn-A(.833*R),nn,nn+A(as),nn+A(.833*R),nn+A(S.ia*R)].map(h=>Date.UTC(y,m-1,d)+h*36e5)}
+function day(y,m,d){const b=calc(y,m,d);return K.map((k,i)=>{const f=S.fix[k];if(f&&/^\d\d:\d\d$/.test(f))return toUtc(y,m,d,+f.slice(0,2),+f.slice(3),S.city.tz);return Math.round(b[i]/6e4)*6e4+(+S.off[k]||0)*6e4})}
+function cur(){const[y,m,d]=today(),t=new Date(Date.UTC(y,m-1,d+dayOff));return[t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate(),t.getUTCDay()]}
+function mv(n){dayOff+=n;render()}
+function pick(v){if(!v)return;const[y,m,d]=v.split("-").map(Number),[a,b,c]=today();dayOff=Math.round((Date.UTC(y,m-1,d)-Date.UTC(a,b-1,c))/864e5);render()}
+function nextP(){const[y,m,d]=today();for(let i=0;i<2;i++){const t=new Date(Date.UTC(y,m-1,d+i)),a=day(t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate());for(const j of[0,2,3,4,5])if(a[j]>Date.now())return[j,a[j]]}return[0,NaN]}
+function render(){const[y,m,d,w]=cur(),a=day(y,m,d),[nj]=nextP(),tz=S.city.tz;
+ $("loc").textContent=S.city.n;$("dt").textContent=d+" "+OY[m-1]+" "+y+", "+HF[w];
+ $("pk").value=y+"-"+String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+ $("rows").innerHTML=K.map((k,i)=>`<div class="row ${dayOff==0&&i==nj?"nx":""}"><span>${L[i]}${S.fix[k]?"<i>qo'lda</i>":S.off[k]?"<i>"+(S.off[k]>0?"+":"")+S.off[k]+" daq</i>":""}</span><b>${hm(a[i],tz)}</b></div>`).join("");
+ $("cs").value=S.city.gps?"gps":S.city.n;$("fa").value=S.fa;$("ia").value=S.ia;$("sn").checked=!!S.snd;qibla()}
+function tick(){const[j,t]=nextP();if(isNaN(t))return;let s=Math.max(0,Math.floor((t-Date.now())/1e3));const p=n=>String(n).padStart(2,"0");
+ $("nx").textContent=L[j]+" vaqtigacha";$("cd").textContent=p(s/3600|0)+":"+p(s/60%60|0)+":"+p(s%60)}
+function tab(n,b){document.querySelectorAll(".tab").forEach((e,i)=>e.classList.toggle("on",i==n));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x==b));if(n==1)startC()}
+function setCity(v){if(v=="gps")return;const c=C.find(x=>x[0]==v);S.city={n:c[0],lat:c[1],lng:c[2],tz:c[3]};ch()}
+async function gps(){$("gs").textContent="Aniqlanmoqda...";try{const G=cap("Geolocation");let p;
+ if(G){await G.requestPermissions();p=(await G.getCurrentPosition({timeout:20000})).coords}else p=await new Promise((o,e)=>navigator.geolocation.getCurrentPosition(r=>o(r.coords),e,{timeout:20000}));
+ S.city={n:"Mening joylashuvim",lat:p.latitude,lng:p.longitude,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,gps:1};$("gs").textContent="Aniqlandi: "+p.latitude.toFixed(3)+", "+p.longitude.toFixed(3);ch()}catch(e){$("gs").textContent="Aniqlab bo'lmadi. GPS va ruxsatni tekshiring."}}
+function ang(){S.fa=+$("fa").value||18;S.ia=+$("ia").value||18;ch()}
+function snd(){S.snd=$("sn").checked?1:0;ch()}
+function adj(){$("adj").innerHTML=K.map(k=>`<div class="f"><span>${L[K.indexOf(k)]}</span><input type="number" placeholder="daq" value="${S.off[k]||""}" onchange="S.off['${k}']=+this.value;ch()"><input type="time" value="${S.fix[k]||""}" onchange="S.fix['${k}']=this.value;ch()">${k=="sunrise"?"":`<input type="checkbox" ${S.az[k]?"checked":""} onchange="S.az['${k}']=this.checked?1:0;ch()">`}</div>`).join("")}
+async function schedule(){const N=cap("LocalNotifications");if(!N){$("st").textContent="Eslatmalar faqat APK ichida ishlaydi.";return}
+ try{const pr=await N.requestPermissions();if(pr.display!=="granted"){$("st").textContent="Bildirishnomalarga ruxsat bering.";return}
+ try{const e=await N.checkExactNotificationSetting();if(e.exact_alarm!=="granted")await N.changeExactNotificationSetting()}catch(_){}
+ await N.createChannel({id:"azon",name:"Azon",description:"Namoz vaqti azoni",importance:5,sound:"azon.mp3",vibration:true});
+ await N.createChannel({id:"jim",name:"Eslatma (ovozsiz)",importance:3,vibration:true});
+ const p=await N.getPending();if(p.notifications.length)await N.cancel({notifications:p.notifications});
+ const[y,m,d]=today(),list=[];
+ for(let i=0;i<14;i++){const t=new Date(Date.UTC(y,m-1,d+i)),a=day(t.getUTCFullYear(),t.getUTCMonth()+1,t.getUTCDate());
+  K.forEach((k,j)=>{if(j!=1&&S.az[k]&&a[j]>Date.now())list.push({id:i*10+j+1,title:L[j]+" vaqti",body:S.city.n+" — "+hm(a[j],S.city.tz),channelId:S.snd?"azon":"jim",schedule:{at:new Date(a[j]),allowWhileIdle:true}})})}
+ await N.schedule({notifications:list});$("st").textContent="Keyingi 14 kun uchun "+list.length+" ta eslatma o'rnatildi."}catch(e){$("st").textContent="Eslatma xatosi: "+e}}
+let hd=null,lis=false;
+function qb(){const a=S.city.lat*R,b=21.4225*R,dl=(39.8262-S.city.lng)*R;return(Math.atan2(Math.sin(dl)*Math.cos(b),Math.cos(a)*Math.sin(b)-Math.sin(a)*Math.cos(b)*Math.cos(dl))/R+360)%360}
+function qibla(){const b=qb();$("qm").style.transform="rotate("+b+"deg)";$("qd").textContent="Qibla yo'nalishi: shimoldan "+b.toFixed(1)+"° (soat mili bo'yicha)";if(hd===null)$("dial").style.transform="none"}
+function startC(){if(lis)return;lis=true;const f=e=>{if(e.alpha==null)return;const h=(360-e.alpha)%360;hd=hd===null?h:(hd+(((h-hd+540)%360)-180)*.25+360)%360;
+ $("dial").style.transform="rotate("+(-hd)+"deg)";const x=((qb()-hd+540)%360)-180;$("qs").textContent=Math.abs(x)<4?"Qibla shu yo'nalishda ✓":"Telefonni "+(x>0?"o'ngga":"chapga")+" buring";$("qs").className=Math.abs(x)<4?"ok":""};
+ window.addEventListener("deviceorientationabsolute",f,true);window.addEventListener("deviceorientation",e=>{if(e.absolute)f(e)},true)}
+$("cs").innerHTML='<option value="gps" hidden>GPS joylashuvi</option>'+C.map(c=>`<option>${c[0]}</option>`).join("");
+adj();render();tick();setInterval(tick,1000);setTimeout(schedule,1500);
+</script></body></html>

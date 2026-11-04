@@ -17,11 +17,21 @@ jobs:
       - run: npm install
       - run: cp azon*.mp3 www/azon.mp3
       - run: npx cap add android
-      - name: Azon ovozi va ruxsatlar
+      - name: Ikonka, ruxsatlar va imzo
         run: |
-          mkdir -p android/app/src/main/res/raw
-          cp azon*.mp3 android/app/src/main/res/raw/azon.mp3
-          sed -i 's#<application#<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.USE_EXACT_ALARM"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.VIBRATE"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><application#' android/app/src/main/AndroidManifest.xml
+          R=android/app/src/main/res
+          mkdir -p $R/raw $R/drawable $R/values $R/mipmap-anydpi-v26 ~/.android
+          cp azon*.mp3 $R/raw/azon.mp3
+          cp native/debug.keystore ~/.android/debug.keystore
+          cp native/*.java android/app/src/main/java/uz/namoz/vaqtlari/
+          python3 -c "p='android/app/src/main/AndroidManifest.xml';s=open(p).read();a=open('native/manifest_add.xml').read();open(p,'w').write(s.replace('</application>',a+'</application>'))"
+          cp native/ic_fg.xml $R/drawable/ic_fg.xml
+          cp native/ic_bg_namoz.xml $R/values/ic_bg_namoz.xml
+          cp native/ic_launcher.xml $R/mipmap-anydpi-v26/ic_launcher.xml
+          cp native/ic_launcher.xml $R/mipmap-anydpi-v26/ic_launcher_round.xml
+          find $R -name 'splash.png' -delete
+          cp native/splash.xml $R/drawable/splash.xml
+          sed -i 's#<application#<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.USE_EXACT_ALARM"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.VIBRATE"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/><uses-permission android:name="android.permission.WAKE_LOCK"/><application#' android/app/src/main/AndroidManifest.xml
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:

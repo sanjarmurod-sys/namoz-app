@@ -2,6 +2,9 @@ name: Build APK
 on:
   workflow_dispatch:
   push:
+    branches: [main]
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,3 +40,10 @@ jobs:
         with:
           name: namoz-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: APKni "Releases" bo'limiga qo'yish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk namoz-vaqtlari.apk
+          gh release delete latest -y --cleanup-tag || true
+          gh release create latest namoz-vaqtlari.apk --target ${{ github.sha }} --title "Namoz Vaqtlari (oxirgi versiya)" --notes "Telefonga shu APK faylni yuklab o'rnating."

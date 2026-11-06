@@ -137,9 +137,9 @@ def main():
         merged = {k: v for k, v in old.items() if k >= str(today - datetime.timedelta(days=60))}
         for d in days:
             merged[d.isoformat()] = day
-        res = {"city": "Kanal jadvali", "source": "https://t.me/" + CHANNEL, "post": post,
+        res = {"city": "Chinobod (Baliqchi)", "lat": 40.8768, "lng": 71.9726, "radius": 60, "source": "https://t.me/" + CHANNEL, "post": post,
                "updated": today.isoformat(), "days": dict(sorted(merged.items()))}
-        if json.dumps(res.get("days")) == json.dumps(old):
+        if json.dumps(res.get("days")) == json.dumps(old) and prev.get("lat") is not None:
             print("Yangi jadval yo'q (o'zgarish topilmadi):", post)
             return 0
         json.dump(res, open(OUT, "w", encoding="utf8"), ensure_ascii=False, indent=1)

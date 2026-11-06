@@ -1,8 +1,11 @@
 {
- "city": "Kanal jadvali",
+ "city": "Chinobod (Baliqchi)",
+ "lat": 40.8768,
+ "lng": 71.9726,
+ "radius": 60,
  "source": "https://t.me/namozvaqti365",
  "post": "namozvaqti365/1065",
- "updated": "2026-11-05",
+ "updated": "2026-11-06",
  "days": {
   "2026-10-30": {
    "fajr": "06:10",
